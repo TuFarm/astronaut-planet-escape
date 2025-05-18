@@ -3,17 +3,22 @@ package main;
 import java.awt.Graphics;
 
 import entities.Player;
+import gamestate.Gamestate;
+import gamestate.Menu;
+import gamestate.Playing;
 import levels.LevelManager;
 
 public class Game implements Runnable {
 
+	@SuppressWarnings("unused")
 	private GameWindow gameWindow;
 	private GamePanel gamePanel;
 	private Thread gameThread;
 	private final int FPS_SET = 120;
 	private final int UPS_SET = 200;
-	private Player player;
-	private LevelManager levelManager;
+	
+	private Playing playing;
+	private Menu menu;
 
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 1.7f;
@@ -35,9 +40,8 @@ public class Game implements Runnable {
 	}
 
 	private void initClasses() {
-		levelManager = new LevelManager(this);
-		player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
-		player.loadLvlData(LevelManager.getCurrentLevel().getLevelData());
+		menu = new Menu(this);
+		playing = new Playing(this);	
 		
 
 	}
@@ -48,13 +52,30 @@ public class Game implements Runnable {
 	}
 
 	public void update() {
-		player.update();
-		levelManager.update();
+		switch (Gamestate.state) {
+		case MENU:
+			menu.update();
+			break;
+		case PLAYING:
+			playing.update();
+			break;
+		default:
+			break;
+
+		}
 	}
 
 	public void render(Graphics g) {
-		levelManager.draw(g);
-		player.render(g);
+		switch (Gamestate.state) {
+		case MENU:
+			menu.draw(g);
+			break;
+		case PLAYING:
+			playing.draw(g);
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -102,10 +123,15 @@ public class Game implements Runnable {
 	}
 
 	public void windowFocusLost() {
-		player.resetDirBooleans(); // Set boolean to false if window lost focus (key release)
+		if (Gamestate.state == Gamestate.PLAYING)
+			playing.getPlayer().resetDirBooleans();
 	}
 
-	public Player getPlayer() {
-		return player;
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public Playing getPlaying() {
+		return playing;
 	}
 }

@@ -5,6 +5,7 @@ import static utilz.HelpMethods.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import levels.Level;
 import main.Game;
 import utilz.LoadSave;
 
@@ -212,6 +213,11 @@ public class Player extends Entity {
 
 	public void setJump(boolean jump) {
 		this.jump = jump;
+	}
+
+	public void loadSave(Level currentLevel) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

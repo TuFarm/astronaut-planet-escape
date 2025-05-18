@@ -3,8 +3,6 @@ package main;
 import java.awt.Dimension;
 
 import java.awt.Graphics;
-import java.awt.Toolkit;
-
 import javax.swing.JPanel;
 
 import inputs.KeyboardInputs;
@@ -34,8 +32,8 @@ public class GamePanel extends JPanel {
 	}
 
 	private void setPanelSize() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setPreferredSize(screenSize);
+		Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
+		setPreferredSize(size);
 	}
 
 	public void updateGame() {

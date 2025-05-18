@@ -15,7 +15,7 @@ public class Game implements Runnable {
 	private Player player;
 	private LevelManager levelManager;
 
-	public final static int TILES_DEFAULT_SIZE = 30;
+	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static float SCALE = 2f;
 	public final static int TILES_IN_WIDTH = 26;
 	public final static int TILES_IN_HEIGHT = 14;
@@ -31,12 +31,14 @@ public class Game implements Runnable {
 		gamePanel.requestFocus();
 
 		startGameLoop();
+
 	}
 
 	private void initClasses() {
 		levelManager = new LevelManager(this);
-		player = new Player(200, 200, (int) (64 * SCALE), (int) (40 * SCALE));
-		player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
+		player = new Player(100, 420, (int) (64 * SCALE), (int) (40 * SCALE));
+		player.loadLvlData(LevelManager.getCurrentLevel().getLevelData());
+		
 
 	}
 
@@ -46,8 +48,8 @@ public class Game implements Runnable {
 	}
 
 	public void update() {
-		levelManager.update();
 		player.update();
+		levelManager.update();
 	}
 
 	public void render(Graphics g) {
@@ -58,7 +60,7 @@ public class Game implements Runnable {
 	@Override
 	public void run() {
 
-		double timePerFrame = 1000000000.0 / FPS_SET;
+		double timePerFrame = 1000000000.0 / FPS_SET; // Storage the each frame last in nano second
 		double timePerUpdate = 1000000000.0 / UPS_SET;
 
 		long previousTime = System.nanoTime();
@@ -94,18 +96,16 @@ public class Game implements Runnable {
 				System.out.println("FPS: " + frames + " | UPS: " + updates);
 				frames = 0;
 				updates = 0;
-
 			}
 		}
 
 	}
 
 	public void windowFocusLost() {
-		player.resetDirBooleans();
+		player.resetDirBooleans(); // Set boolean to false if window lost focus (key release)
 	}
 
 	public Player getPlayer() {
 		return player;
 	}
-
 }

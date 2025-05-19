@@ -124,6 +124,14 @@ public class Playing extends State implements Statemethods{
 	public Player getPlayer() {
 		return player;
 	}
+
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

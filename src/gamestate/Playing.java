@@ -7,10 +7,14 @@ import java.awt.event.MouseEvent;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
+import ui.PauseOverlay;
 
 public class Playing extends State implements Statemethods{
 	private Player player;
 	private LevelManager levelManager;
+	private PauseOverlay pauseOverlay;
+	private boolean paused = false;
+	
 	public Playing(Game game) {
 		super(game);
 		initClasses();
@@ -22,6 +26,7 @@ public class Playing extends State implements Statemethods{
 		levelManager = new LevelManager(game);
 		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
 		player.loadLvlData(LevelManager.getCurrentLevel().getLevelData());
+		pauseOverlay = new PauseOverlay(this);
 		
 
 	}
@@ -31,8 +36,12 @@ public class Playing extends State implements Statemethods{
 
 	@Override
 	public void update() {
-		levelManager.update();
-		player.update();
+		if(!paused) {
+			levelManager.update();
+			player.update();
+		}else {
+			pauseOverlay.update();
+		}
 		
 	}
 
@@ -42,6 +51,9 @@ public class Playing extends State implements Statemethods{
 	public void draw(Graphics g) {
 		levelManager.draw(g);
 		player.render(g);
+		
+		if(paused)
+		pauseOverlay.draw(g);
 		
 	}
 
@@ -54,25 +66,6 @@ public class Playing extends State implements Statemethods{
 		}
 		
 	}
-
-
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch (e.getKeyCode()) {
@@ -86,17 +79,13 @@ public class Playing extends State implements Statemethods{
 		case KeyEvent.VK_D:
 			player.setRight(true);
 			break;
-		case KeyEvent.VK_ENTER:
-			Gamestate.state = Gamestate.MENU;
+		case KeyEvent.VK_ESCAPE:
+			paused = !paused;
 		/*case KeyEvent.VK_J:
 			player.setAttacking(true);
 			break;*/
 		}
-		
-		
 	}
-
-
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -117,6 +106,41 @@ public class Playing extends State implements Statemethods{
 		}
 		
 	}
+	
+	public void mouseDragged(MouseEvent e) {
+		if(paused)
+			pauseOverlay.mouseDragged(e);
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if(paused)
+			pauseOverlay.mousePressed(e);
+		
+	}
+	
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if(paused)
+			pauseOverlay.mouseReleased(e);
+		
+	}
+
+
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		if(paused)
+			pauseOverlay.mouseMoved(e);
+		
+	}
+	public void unpauseGame() {
+		paused = false;
+	}
+
+
 	public void windowFocusLost() {
 		player.resetDirBooleans(); // Set boolean to false if window lost focus (key release)
 	}
@@ -124,14 +148,4 @@ public class Playing extends State implements Statemethods{
 	public Player getPlayer() {
 		return player;
 	}
-
-
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-
 }

@@ -152,14 +152,21 @@ if(!inAir)
 	}
 
 	private void loadAnimations() {
+	    BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+	    int frameWidth = 64;  // chiều rộng 1 frame
+	    int frameHeight = 40; // chiều cao 1 frame
 
-		animations = new BufferedImage[9][6];
-		for (int j = 0; j < animations.length; j++)
-			for (int i = 0; i < animations[j].length; i++)
-				animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
+	    int cols = img.getWidth() / frameWidth;
+	    int rows = img.getHeight() / frameHeight;
 
+	    animations = new BufferedImage[rows][cols];
+
+	    for (int j = 0; j < rows; j++) {
+	        for (int i = 0; i < cols; i++) {
+	            animations[j][i] = img.getSubimage(i * frameWidth, j * frameHeight, frameWidth, frameHeight);
+	        }
+	    }
 	}
 
 	public void loadLvlData(int[][] lvlData) {

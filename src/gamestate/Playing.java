@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import entities.AlienManager;
 import entities.Player;
 import levels.LevelManager;
 import main.Game;
@@ -17,6 +18,7 @@ import static utilz.Constants.Environment.*;
 public class Playing extends State implements Statemethods{
 	private Player player;
 	private LevelManager levelManager;
+	private AlienManager alienManager;
 	private PauseOverlay pauseOverlay;
 	private boolean paused = false;
 	
@@ -47,6 +49,7 @@ public class Playing extends State implements Statemethods{
 
 	private void initClasses() {
 		levelManager = new LevelManager(game);
+		alienManager = new AlienManager(this);
 		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
 		player.loadLvlData(LevelManager.getCurrentLevel().getLevelData());
 		pauseOverlay = new PauseOverlay(this);
@@ -54,22 +57,18 @@ public class Playing extends State implements Statemethods{
 
 	}
 	
-
-
-
 	@Override
 	public void update() {
 		if(!paused) {
 			levelManager.update();
 			player.update();
+			alienManager.update();
 			checkCloseToBorder();
 		}else {
 			pauseOverlay.update();
 		}
 		
 	}
-
-
 
 	private void checkCloseToBorder() {
        int playerX = (int) player.getHitbox().x;
@@ -97,6 +96,7 @@ public class Playing extends State implements Statemethods{
 		
 		levelManager.draw(g, xLvlOffset);
 		player.render(g, xLvlOffset);
+		alienManager.draw(g, xLvlOffset);
 		
 		if(paused) {
 		g.setColor(new Color(45,56,33,200));
@@ -105,8 +105,6 @@ public class Playing extends State implements Statemethods{
 		}
 		
 	}
-
-
 
 	private void drawClouds(Graphics g) {
 		
@@ -118,8 +116,6 @@ public class Playing extends State implements Statemethods{
      for(int i = 0; i < smallCloudsPos.length; i++)
      g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
 	}
-
-
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -181,16 +177,12 @@ public class Playing extends State implements Statemethods{
 		
 	}
 	
-
-
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(paused)
 			pauseOverlay.mouseReleased(e);
 		
 	}
-
-
 
 	@Override
 	public void mouseMoved(MouseEvent e) {

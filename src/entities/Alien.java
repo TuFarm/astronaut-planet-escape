@@ -2,6 +2,10 @@ package entities;
 
 import static utilz.Constants.AlienConstants.*;
 import static utilz.HelpMethods.*;
+
+import java.awt.geom.Rectangle2D;
+import java.util.spi.CurrencyNameProvider;
+
 import static utilz.Constants.Direction.*;
 
 import main.Game;
@@ -18,11 +22,17 @@ public abstract class Alien extends Entity {
 	protected int walkDir = LEFT;
 	protected int tileY;
 	protected float attackDistance = Game.TILES_SIZE;
+	protected int maxHealth;
+	protected int currentHealth;
+	protected boolean active = true;
+	protected boolean attackChecked;
 
 	public Alien(float x, float y, int width, int height, int enemyType) {
 		super(x, y, width, height);
 		this.enemyType = enemyType;
 		initHitbox(x, y, width, height);
+		maxHealth = GetMaxHealth(enemyType);
+		currentHealth = maxHealth;
 	}
 
 	protected void firstUpdateCheck(int[][] lvlData) {
@@ -67,6 +77,22 @@ public abstract class Alien extends Entity {
 		aniIndex = 0;
 	}
 
+	public void hurt(int amount) {
+		currentHealth -= amount;
+		if (currentHealth <= 0)
+			newState(DEAD);
+		else
+			newState(HIT);
+
+	}
+
+	protected void checkAlienHit(Rectangle2D.Float attackBox, Player player) {
+		if (attackBox.intersects(player.hitbox))
+			player.changeHealth(-GetAlienDmg(enemyType));
+		attackChecked = true;
+
+	}
+
 	protected boolean canSeePlayer(int[][] lvlData, Player player) {
 		int playerTileY = (int) player.getHitbox().y / Game.TILES_SIZE;
 		if (playerTileY == tileY) {
@@ -94,8 +120,12 @@ public abstract class Alien extends Entity {
 			aniIndex++;
 			if (aniIndex >= getSpriteAmount(enemyType, enemyState)) {
 				aniIndex = 0;
-				if (enemyState == ATTACK)
-					enemyState = IDLE;
+
+				switch (enemyState) {
+				case ATTACK, HIT -> enemyState = IDLE;
+				case DEAD -> active = false;
+				}
+
 			}
 		}
 	}
@@ -104,11 +134,25 @@ public abstract class Alien extends Entity {
 		walkDir = (walkDir == LEFT) ? RIGHT : LEFT;
 	}
 
+	public void resetAlien() {
+		hitbox.x = x; // Set to the initial x pos of the Alien
+		hitbox.y = y; // Same but y axis
+		firstUpdate = true;
+		currentHealth = maxHealth;
+		newState(IDLE); // Set initial to IDLE
+		active = true; // Set to alive
+		fallSpeed = 0;
+	}
+	
 	public int getAniIndex() {
 		return aniIndex;
 	}
 
 	public int getEnemyState() {
 		return enemyState;
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 }

@@ -1,6 +1,7 @@
 package entities;
 
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -27,7 +28,8 @@ public class AlienManager {
 
 	public void update(int[][] lvlData, Player player) {
 		for (Slime slime : slimes)
-			slime.update(lvlData, player);
+			if (slime.isActive())
+				slime.update(lvlData, player);
 	}
 
 	public void draw(Graphics g, int xLvlOffset) {
@@ -35,13 +37,26 @@ public class AlienManager {
 	}
 
 	private void drawAlien(Graphics g, int xLvlOffset) {
-		for (Slime slime : slimes) {
-			g.drawImage(crabbyArr[slime.getEnemyState()][slime.getAniIndex()],
-					(int) slime.getHitbox().x - xLvlOffset - SLIME_DRAWOFFSET_X,
-					(int) slime.getHitbox().y - SLIME_DRAWOFFSET_Y, ALIEN_WIDTH, ALIEN_HEIGHT, null);
+		for (Slime slime : slimes)
+			if (slime.isActive()) {
+				g.drawImage(crabbyArr[slime.getEnemyState()][slime.getAniIndex()],
+						(int) slime.getHitbox().x - xLvlOffset - SLIME_DRAWOFFSET_X + slime.flipX(),
+						(int) slime.getHitbox().y - SLIME_DRAWOFFSET_Y, ALIEN_WIDTH * slime.flipW(), ALIEN_HEIGHT,
+						null);
 //			slime.drawHitbox(g, xLvlOffset);
-		}
+//				slime.drawAttackBox(g, xLvlOffset);
+			}
 
+	}
+
+	public void checkAlienHit(Rectangle2D.Float attackBox) {
+		for (Slime slime : slimes)
+		if (slime.isActive())
+			if (attackBox.intersects(slime.getHitbox())) {
+				slime.hurt(10); // Player cause 10 dmg
+				return;
+			}
+		
 	}
 
 	private void loadAlienImgs() {
@@ -51,5 +66,11 @@ public class AlienManager {
 			for (int i = 0; i < crabbyArr[j].length; i++)
 				crabbyArr[j][i] = temp.getSubimage(i * ALIEN_DEFAULT_WIDTH, j * ALIEN_DEFAULT_HEIGHT,
 						ALIEN_DEFAULT_WIDTH, ALIEN_DEFAULT_HEIGHT);
+	}
+	
+	public void resetAllAliens() {
+		for(Slime slime : slimes) {
+			slime.resetAlien();
+		}
 	}
 }

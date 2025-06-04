@@ -16,7 +16,7 @@ public class HelpMethods {
 	}
 
 	private static boolean IsSolid(float x, float y, int[][] lvlData) {
-		int maxWidth = lvlData[0].length * Game.TILES_SIZE; 
+		int maxWidth = lvlData[0].length * Game.TILES_SIZE;
 		if (x < 0 || x >= maxWidth)
 			return true;
 		if (y < 0 || y >= Game.GAME_HEIGHT)
@@ -25,7 +25,14 @@ public class HelpMethods {
 		float xIndex = x / Game.TILES_SIZE;
 		float yIndex = y / Game.TILES_SIZE;
 
-		int value = lvlData[(int) yIndex][(int) xIndex];
+		return IsTileSolid((int) xIndex, (int) yIndex, lvlData);
+	}
+
+	public static boolean IsTileSolid(int xTile, int yTile, int[][] lvlData) {
+		if (yTile < 0 || yTile >= lvlData.length || xTile < 0 || xTile >= lvlData[0].length)
+		    return true; // at edge -> cannot move
+
+		int value = lvlData[yTile][xTile];
 
 		if (value >= 48 || value < 0 || value != 11)
 			return true;
@@ -67,4 +74,34 @@ public class HelpMethods {
 
 	}
 
+	public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
+		float xFront = (xSpeed > 0) ? hitbox.x + hitbox.width + xSpeed : hitbox.x + xSpeed;
+
+		float yFeet = hitbox.y + hitbox.height + 1;
+
+		return IsSolid(xFront, yFeet, lvlData);
+	}
+
+	// EP 16 - 3
+	public static boolean IsAllTilesWalkable(int xStart, int xEnd, int y, int[][] lvlData) {
+		for (int i = 0; i < xEnd - xStart; i++) {
+			if (IsTileSolid(xStart + i, y, lvlData))
+				return false;
+			if (!IsTileSolid(xStart + i, y + 1, lvlData)) // checking under 1 height
+				return false;
+		}
+		return true;
+	}
+
+	public static boolean IsSightClear(int[][] lvlData, Rectangle2D.Float firstHitbox, Rectangle2D.Float secondHitbox,
+	        int yTile) {
+
+	    int firstXTile = (int) (firstHitbox.x / Game.TILES_SIZE);	
+	    int secondXTile = (int) (secondHitbox.x / Game.TILES_SIZE); 
+
+	    if (firstXTile > secondXTile)
+	        return IsAllTilesWalkable(secondXTile, firstXTile, yTile, lvlData);
+	    else
+	        return IsAllTilesWalkable(firstXTile, secondXTile, yTile, lvlData);
+	}
 }

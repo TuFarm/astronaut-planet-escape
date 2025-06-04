@@ -1,7 +1,5 @@
 package main;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
@@ -16,9 +14,9 @@ public class GameWindow {
 
 		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframe.add(gamePanel);
-//		jframe.setLocationRelativeTo(null);
 		jframe.setResizable(false);
 		jframe.pack();
+		jframe.setLocationRelativeTo(null);
 		jframe.setVisible(true);
 		jframe.addWindowFocusListener(new WindowFocusListener() {
 

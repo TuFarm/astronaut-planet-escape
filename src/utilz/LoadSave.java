@@ -8,10 +8,9 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import entities.Alien;
-import entities.Octopus;
+import entities.Slime;
 import main.Game;
-import static utilz.Constants.AlienConstants.OCTOPUS;;
+import static utilz.Constants.AlienConstants.SLIME;
 
 public class LoadSave {
 
@@ -29,7 +28,7 @@ public class LoadSave {
 	public static final String PLAYING_BACKGROUND_IMG = "TonLu.png";
 	public static final String BIG_CLOUDS = "big_clouds.png";
 	public static final String SMALL_CLOUDS = "small_clouds.png";
-	public static final String OCTOPUS_SPRITE = "octopus_sprite.png";
+	public static final String SLIME_SPRITE = "crabby_sprite.png";
 
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
@@ -50,16 +49,16 @@ public class LoadSave {
 		return img;
 	}
 
-	public static ArrayList<Octopus> GetOctopus() {
+	public static ArrayList<Slime> GetSlime() {
 		BufferedImage img = GetSpriteAtlas(LEVEL_ONE_DATA);
-		ArrayList<Octopus> list = new ArrayList<>();
+		ArrayList<Slime> list = new ArrayList<>();
 
 		for (int i = 0; i < img.getHeight(); i++) {
 			for (int j = 0; j < img.getWidth(); j++) {
 				Color color = new Color(img.getRGB(j, i));
 				int value = color.getGreen();
-				if (value == OCTOPUS) // Check if any pixel green's value is 0, if 0 -> draw an alien at that position
-					list.add(new Octopus(j * Game.TILES_SIZE, i * Game.TILES_SIZE));
+				if (value == SLIME) // Check if any pixel green's value is 0, if 0 -> draw an alien at that position
+					list.add(new Slime(j * Game.TILES_SIZE, i * Game.TILES_SIZE));
 			}
 		}
 		return list;

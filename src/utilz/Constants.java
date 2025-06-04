@@ -5,7 +5,7 @@ import main.Game;
 public class Constants {
 
 	public static class AlienConstants {
-        public static final int OCTOPUS = 0;
+        public static final int SLIME = 0;
 
         public static final int IDLE = 0;
         public static final int RUNNING = 1;
@@ -13,24 +13,29 @@ public class Constants {
         public static final int HIT = 3;
         public static final int DEAD = 4;
 
-        public static final int ALIEN_DEFAULT_WIDTH = 34;
-        public static final int ALIEN_DEFAULT_HEIGHT = 34;
+        public static final int ALIEN_DEFAULT_WIDTH = 72;
+        public static final int ALIEN_DEFAULT_HEIGHT = 32;
 
         public static final int ALIEN_WIDTH = (int) (ALIEN_DEFAULT_WIDTH * Game.SCALE);
         public static final int ALIEN_HEIGHT = (int) (ALIEN_DEFAULT_HEIGHT * Game.SCALE);
+        
+        public static final int SLIME_DRAWOFFSET_X = (int) (26*Game.SCALE);
+        public static final int SLIME_DRAWOFFSET_Y = (int) (9*Game.SCALE);
 
         public static int getSpriteAmount(int alien_type, int alien_state) {
             switch (alien_type) {
-                case OCTOPUS:
+                case SLIME:
                     switch (alien_state) {
                         case IDLE:
+                        	return 9;
                         case RUNNING:
-                            return 8;
-                        case ATTACK:
-                        case DEAD:
                             return 6;
-                        case HIT:
+                        case ATTACK:
+                        	return 7;
+                        case DEAD:
                             return 4;
+                        case HIT:
+                            return 5;
                     }
             }
             return 1;

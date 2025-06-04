@@ -45,7 +45,7 @@ public class Player extends Entity {
 				(int) (64 * Game.SCALE), // Width
 				(int) (40 * Game.SCALE), // Height
 				null);
-//		drawHitbox(g);
+//		drawHitbox(g, lvlOffset);
 	}
 
 	private void updateAnimationTick() {

@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import gamestate.Playing;
+import levels.Level;
 import utilz.LoadSave;
 import static utilz.Constants.AlienConstants.*;
 
@@ -18,18 +19,22 @@ public class AlienManager {
 	public AlienManager(Playing playing) {
 		this.playing = playing;
 		loadAlienImgs();
-		addAliens();
 	}
 
-	private void addAliens() {
-		slimes = LoadSave.GetSlime();
+	public void loadAliens(Level level) {
+		slimes = level.getSlimes();
 
 	}
 
 	public void update(int[][] lvlData, Player player) {
-		for (Slime slime : slimes)
-			if (slime.isActive())
-				slime.update(lvlData, player);
+		boolean isAnyActive = false;
+		for (Slime c : slimes)
+			if (c.isActive()) {
+				c.update(lvlData, player);
+		isAnyActive = true;
+	}
+	if(!isAnyActive)
+		playing.setLevelCompleted(true);
 	}
 
 	public void draw(Graphics g, int xLvlOffset) {

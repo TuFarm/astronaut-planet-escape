@@ -9,15 +9,13 @@ import java.awt.geom.Rectangle2D;
 
 import main.Game;
 
-public class Slime extends Alien {
+public class Slime extends Alien {//crabby
 
-	// Attack box
-	private Rectangle2D.Float attackBox;
 	private int attackBoxOffsetX;
 
 	public Slime(float x, float y) {
 		super(x, y, ALIEN_WIDTH, ALIEN_HEIGHT, SLIME);
-		initHitbox(x, y, (int) (22 * Game.SCALE), (int) (19 * Game.SCALE));
+		initHitbox(22, 19);
 		initAttackBox();
 	}
 
@@ -47,7 +45,7 @@ public class Slime extends Alien {
 		if (inAir)
 			updateInAir(lvlData);
 		else {
-			switch (enemyState) {
+			switch (state) {
 			case IDLE:
 				newState(RUNNING);
 				break;

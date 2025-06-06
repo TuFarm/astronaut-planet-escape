@@ -2,7 +2,9 @@ package levels;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import gamestate.Gamestate;
 import main.Game;
 import utilz.LoadSave;
 
@@ -10,12 +12,35 @@ public class LevelManager {
 
 	private Game game;
 	private BufferedImage[] levelSprite;
-	private static Level levelOne;
+	private ArrayList<Level> levels;
+	private int lvlIndex = 0;
 
 	public LevelManager(Game game) {
 		this.game = game;
 		importOutsideSprites();
-		levelOne = new Level(LoadSave.GetLevelData());
+		levels = new ArrayList<>();
+		buildAllLevels();
+	}
+	
+	public void loadNextLevel() {
+		lvlIndex++;
+		if(lvlIndex >= levels.size()) {
+			lvlIndex = 0;
+			System.out.println("No more levels! Game Completed!");
+			Gamestate.state = Gamestate.MENU;
+		}
+		Level newLevel = levels.get(lvlIndex);
+		game.getPlaying().getAlienManager().loadAliens(newLevel);
+		game.getPlaying().getPlayer().loadLvlData(newLevel.getLevelData());
+		game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
+		game.getPlaying().getObjectManager().loadObject(newLevel);
+	}
+
+	private void buildAllLevels() {
+		BufferedImage[] allLevels = LoadSave.getAllLevels();
+		for(BufferedImage img : allLevels)
+			levels.add(new Level(img));
+		
 	}
 
 	private void importOutsideSprites() {
@@ -32,8 +57,8 @@ public class LevelManager {
 
 	public void draw(Graphics g, int lvlOffset) {
 		for (int i = 0; i < Game.TILES_IN_HEIGHT; i++) {
-			for (int j = 0; j < levelOne.getLevelData()[0].length; j++) {
-				int index = levelOne.getSpriteIndex(j, i); // j = x, i = y
+			for (int j = 0; j < levels.get(lvlIndex).getLevelData()[0].length; j++) {
+				int index = levels.get(lvlIndex).getSpriteIndex(j, i); // j = x, i = y
 				g.drawImage(levelSprite[index], Game.TILES_SIZE * j - lvlOffset, Game.TILES_SIZE * i, Game.TILES_SIZE,
 						Game.TILES_SIZE, null);
 			}
@@ -45,7 +70,10 @@ public class LevelManager {
 
 	}
 	
-	public static Level getCurrentLevel() {
-		return levelOne;
+	public Level getCurrentLevel() {
+		return levels.get(lvlIndex);
+	}
+	public int getAmountOfLevels() {
+		return levels.size();
 	}
 }

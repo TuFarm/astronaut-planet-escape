@@ -7,6 +7,7 @@ import gamestate.Gamestate;
 import gamestate.Menu;
 import gamestate.Playing;
 import levels.LevelManager;
+import utilz.LoadSave;
 
 public class Game implements Runnable {
 
@@ -29,6 +30,8 @@ public class Game implements Runnable {
 	public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
 	public Game() {
+		
+		LoadSave.getAllLevels();
 		initClasses();
 
 		gamePanel = new GamePanel(this);

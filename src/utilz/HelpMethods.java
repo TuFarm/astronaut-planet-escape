@@ -12,6 +12,7 @@ import entities.Slime;
 import main.Game;
 import objects.GameContainer;
 import objects.Potion;
+import objects.Die1;
 
 public class HelpMethods {
 
@@ -179,6 +180,19 @@ public class HelpMethods {
 				int value = color.getBlue();
 				if (value == BOX || value == BARREL) // Check if any pixel green's value is 0, if 0 -> draw an alien at that position
 					list.add(new GameContainer(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+			}
+		return list;
+	}
+
+	public static ArrayList<Die1> GetDie1s(BufferedImage img) {
+		ArrayList<Die1> list = new ArrayList<>();
+		
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == DIE1) // Check if any pixel green's value is 0, if 0 -> draw an alien at that position
+					list.add(new Die1(i * Game.TILES_SIZE, j * Game.TILES_SIZE, DIE1));
 			}
 		return list;
 	}

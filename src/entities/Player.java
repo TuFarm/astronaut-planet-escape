@@ -78,21 +78,39 @@ public class Player extends Entity {
 		updateHealthbar();
 		
 		if (currentHealth <= 0) {
-			playing.setGameOver(true);
+			if(state != DEAD) {
+				state = DEAD;
+				aniTick = 0;
+				aniIndex = 0;
+				playing.setPlayerDying(true);
+			}else if(aniIndex == GetSpriteAmount(DEAD) - 1 && aniTick >= ANI_SPEED -1) {
+				playing.setGameOver(true);
+			}else {
+				updateAnimationTick();
+			}
+			
+			
+//			playing.setGameOver(true);
 			return;
 		}
 		
 		updateAttackBox();
 
 		updatePos();
-		if(moving)
+		if(moving) {
 			checkPotionTouched();
+		    checkSpikesTouched();
+		}
 		if (attacking)
 			checkAttack();
 		updateAnimationTick();
 		setAnimation();
 	}
 
+	private void checkSpikesTouched() {
+		playing.checkSpikesTouched(this); 
+		
+	}
 	private void checkPotionTouched() {
 		playing.checkPotionTouched(hitbox);		
 	}
@@ -263,6 +281,9 @@ public class Player extends Entity {
 	public void changePower(int value) {
 		System.out.println("Added power!");
 	}
+public void kill() {
+	currentHealth = 0;	
+	}
 
 	private void loadAnimations() {
 		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
@@ -341,5 +362,6 @@ public class Player extends Entity {
 				
 		
 	}
+	
 
 }

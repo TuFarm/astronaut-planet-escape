@@ -8,6 +8,7 @@ import entities.Slime;
 import main.Game;
 import objects.GameContainer;
 import objects.Potion;
+import objects.Die1;
 import utilz.HelpMethods;
 
 import static utilz.HelpMethods.GetLevelData;
@@ -21,6 +22,7 @@ public class Level {
 	private int[][] lvlData;
 	private ArrayList<Slime> slimes;
 	private ArrayList<Potion> potions;
+	private ArrayList<Die1> die1s;
 	private ArrayList<GameContainer> containers;
 	private int lvlTilesWide;
 	private int maxTilesOffset;
@@ -35,9 +37,15 @@ public class Level {
 		createContainers();
 		calcLvlOffsets();
 		calcPlayerSpawn();
+		createSpikes();
 		
 	}
 	
+	private void createSpikes() {
+		die1s = HelpMethods.GetDie1s(img);
+		
+	}
+
 	private void createContainers() {
 		containers = HelpMethods.GetContainers(img);
 	}
@@ -90,5 +98,8 @@ public int getLvlOffset() {
 	
 	public ArrayList<GameContainer> getContainers(){
 		return containers;
+	}
+	public ArrayList<Die1> getSpikes(){
+		return die1s;
 	}
 }

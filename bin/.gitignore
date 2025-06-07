@@ -1,6 +1,9 @@
 /lvls/
+/ocp .png
+/gamestate/
 /utilz/
+/entities/
 /levels/
 /objects/
-/gamestate/
-/entities/
+/ui/
+/death_screen.png

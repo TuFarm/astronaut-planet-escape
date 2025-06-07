@@ -12,6 +12,7 @@ public class Constants {
 	        public static final int BLUE_POTION = 1;
 	        public static final int BARREL = 2;
 	        public static final int BOX = 3;
+	        public static final int DIE1 = 4;
 
 	        public static final int RED_POTION_VALUE = 15;
 	        public static final int BLUE_POTION_VALUE = 10;
@@ -25,6 +26,11 @@ public class Constants {
 	        public static final int POTION_HEIGHT_DEFAULT = 16;
 	        public static final int POTION_WIDTH = (int) (Game.SCALE * POTION_WIDTH_DEFAULT);
 	        public static final int POTION_HEIGHT = (int) (Game.SCALE * POTION_HEIGHT_DEFAULT);
+	        
+	        public static final int DIE1_WIDTH_DEFAULT = 32;
+	        public static final int DIE1_HEIGHT_DEFAULT = 32;
+	        public static final int DIE1_WIDTH = (int) (Game.SCALE * DIE1_WIDTH_DEFAULT);
+	        public static final int DIE1_HEIGHT = (int) (Game.SCALE * DIE1_HEIGHT_DEFAULT);
 
 
 

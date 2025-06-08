@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import entities.Slime;
 import main.Game;
 import objects.GameContainer;
-import objects.Potion;
+import objects.BatteryItems;
 import objects.Die1;
 
 public class HelpMethods {
@@ -160,14 +160,14 @@ public class HelpMethods {
 	
 	
 	
-	public static ArrayList<Potion> GetPotions(BufferedImage img) {
-		ArrayList<Potion> list = new ArrayList<>();
+	public static ArrayList<BatteryItems> GetPotions(BufferedImage img) {
+		ArrayList<BatteryItems> list = new ArrayList<>();
 		for (int j = 0; j < img.getHeight(); j++)
 			for (int i = 0; i < img.getWidth(); i++) {
 				Color color = new Color(img.getRGB(i, j));
 				int value = color.getBlue();
 				if (value == RED_POTION || value == BLUE_POTION) // Check if any pixel green's value is 0, if 0 -> draw an alien at that position
-					list.add(new Potion(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
+					list.add(new BatteryItems(i * Game.TILES_SIZE, j * Game.TILES_SIZE, value));
 			}
 		return list;
 	}

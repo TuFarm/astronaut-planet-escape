@@ -1,7 +1,7 @@
 package gamestate;
 
 public enum Gamestate {
-   PLAYING, MENU, OPTIONS, QUIT;
+   PLAYING, MENU, GUIDE, QUIT;
 	
 	public static Gamestate state = MENU;
 }

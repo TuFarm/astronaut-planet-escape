@@ -13,7 +13,7 @@ import static utilz.Constants.AlienConstants.*;
 public class AlienManager {
 
 	private Playing playing;
-	private BufferedImage[][] crabbyArr;
+	private BufferedImage[][] slimeArr;
 	private ArrayList<Slime> slimes = new ArrayList<>();
 
 	public AlienManager(Playing playing) {
@@ -28,9 +28,9 @@ public class AlienManager {
 
 	public void update(int[][] lvlData, Player player) {
 		boolean isAnyActive = false;
-		for (Slime c : slimes)
-			if (c.isActive()) {
-				c.update(lvlData, player);
+		for (Slime slime : slimes)
+			if (slime.isActive()) {
+				slime.update(lvlData, player);
 		isAnyActive = true;
 	}
 	if(!isAnyActive)
@@ -44,12 +44,12 @@ public class AlienManager {
 	private void drawAlien(Graphics g, int xLvlOffset) {
 		for (Slime slime : slimes)
 			if (slime.isActive()) {
-				g.drawImage(crabbyArr[slime.getEnemyState()][slime.getAniIndex()],
+				g.drawImage(slimeArr[slime.getEnemyState()][slime.getAniIndex()],
 						(int) slime.getHitbox().x - xLvlOffset - SLIME_DRAWOFFSET_X + slime.flipX(),
 						(int) slime.getHitbox().y - SLIME_DRAWOFFSET_Y, ALIEN_WIDTH * slime.flipW(), ALIEN_HEIGHT,
 						null);
-//			slime.drawHitbox(g, xLvlOffset);
-//				slime.drawAttackBox(g, xLvlOffset);
+			slime.drawHitbox(g, xLvlOffset);
+				slime.drawAttackBox(g, xLvlOffset);
 			}
 
 	}
@@ -65,11 +65,11 @@ public class AlienManager {
 	}
 
 	private void loadAlienImgs() {
-		crabbyArr = new BufferedImage[5][9];
+		slimeArr = new BufferedImage[5][9];
 		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.SLIME_SPRITE);
-		for (int j = 0; j < crabbyArr.length; j++)
-			for (int i = 0; i < crabbyArr[j].length; i++)
-				crabbyArr[j][i] = temp.getSubimage(i * ALIEN_DEFAULT_WIDTH, j * ALIEN_DEFAULT_HEIGHT,
+		for (int j = 0; j < slimeArr.length; j++)
+			for (int i = 0; i < slimeArr[j].length; i++)
+				slimeArr[j][i] = temp.getSubimage(i * ALIEN_DEFAULT_WIDTH, j * ALIEN_DEFAULT_HEIGHT,
 						ALIEN_DEFAULT_WIDTH, ALIEN_DEFAULT_HEIGHT);
 	}
 	

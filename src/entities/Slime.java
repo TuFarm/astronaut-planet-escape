@@ -74,7 +74,7 @@ public class Slime extends Alien {//crabby
 
 	public void drawAttackBox(Graphics g, int xLvlOffset) {
 		g.setColor(Color.red);
-		g.drawRect((int) (attackBox.x - xLvlOffset), (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
+//		g.drawRect((int) (attackBox.x - xLvlOffset), (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
 	}
 
 	public int flipX() {

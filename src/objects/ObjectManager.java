@@ -17,7 +17,7 @@ public class ObjectManager {
 	private Playing playing;
 	private BufferedImage[][] potionImgs, containerImgs;
 	private BufferedImage spikeImg;
-	private ArrayList<Potion> potions;
+	private ArrayList<BatteryItems> potions;
 	private ArrayList<GameContainer> containers;
 	private ArrayList<Die1> die1s;
 
@@ -36,7 +36,7 @@ public class ObjectManager {
 	
 	
 	public void checkObjectTouched(Rectangle2D.Float hitbox) {
-		for(Potion p :potions)
+		for(BatteryItems p :potions)
 		if(p.isActive()) {
 			if(hitbox.intersects(p.getHitbox())) {
 				p.setActive(false);
@@ -44,7 +44,7 @@ public class ObjectManager {
 		}
 	}
 }
-	public void applyEffectToPlayer(Potion p) {
+	public void applyEffectToPlayer(BatteryItems p) {
 		if(p.getObjType() == RED_POTION)
 			playing.getPlayer().changeHealth(RED_POTION_VALUE);
 		else
@@ -61,7 +61,7 @@ public class ObjectManager {
 					int type = 0;
 					if(gc.getObjType() == BARREL)
 						type = 1;
-					potions.add(new Potion((int)(gc.getHitbox().x + gc.getHitbox().width / 2), (int)(gc.getHitbox().y - gc.getHitbox().height/2), type));
+					potions.add(new BatteryItems((int)(gc.getHitbox().x + gc.getHitbox().width / 2), (int)(gc.getHitbox().y - gc.getHitbox().height/2), type));
 					return;
 				}
 				
@@ -79,7 +79,7 @@ public class ObjectManager {
 
 
 	private void loadImgs() {
-		BufferedImage potionSprite = LoadSave.GetSpriteAtlas(LoadSave.POTION_ATLAS);
+		BufferedImage potionSprite = LoadSave.GetSpriteAtlas(LoadSave.BATTERY_ATLAS);
 		potionImgs = new BufferedImage[2][7];
 		
 		for(int j = 0; j < potionImgs.length; j++)
@@ -97,7 +97,7 @@ public class ObjectManager {
 	}
 	
 	public void update() {
-		for(Potion p : potions)
+		for(BatteryItems p : potions)
 			if(p.isActive())
 				p.update();
 		for(GameContainer gc : containers)
@@ -138,7 +138,7 @@ public class ObjectManager {
 
 
 	private void drawPotions(Graphics g, int xLvlOffset) {
-		for(Potion p : potions)
+		for(BatteryItems p : potions)
 			if(p.isActive()) {
 				int type = 0;
 				if(p.getObjType() == RED_POTION)
@@ -155,7 +155,7 @@ public class ObjectManager {
 		//System.out.println("Array size: " + potions.size() + " + " + containers.size() );
 		loadObject(playing.getLevelManager().getCurrentLevel());
 		
-		for(Potion p : potions)
+		for(BatteryItems p : potions)
 			p.reset();
 			
 			for(GameContainer gc : containers)

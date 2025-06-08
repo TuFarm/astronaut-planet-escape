@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import entities.Slime;
 import main.Game;
 import objects.GameContainer;
-import objects.Potion;
+import objects.BatteryItems;
 import objects.Die1;
 import utilz.HelpMethods;
 
@@ -21,7 +21,7 @@ public class Level {
 	private BufferedImage img;
 	private int[][] lvlData;
 	private ArrayList<Slime> slimes;
-	private ArrayList<Potion> potions;
+	private ArrayList<BatteryItems> potions;
 	private ArrayList<Die1> die1s;
 	private ArrayList<GameContainer> containers;
 	private int lvlTilesWide;
@@ -92,7 +92,7 @@ public int getLvlOffset() {
 		return playerSpawn;
 	}
 	
-	public ArrayList<Potion> getPotions(){
+	public ArrayList<BatteryItems> getPotions(){
 		return potions;
 	}
 	
